@@ -1,4 +1,4 @@
-package com.frogobox.research.media3
+package com.frogobox.research.exoplayer
 
 import android.util.Log
 import androidx.lifecycle.LiveData

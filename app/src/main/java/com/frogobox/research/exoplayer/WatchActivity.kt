@@ -1,4 +1,4 @@
-package com.frogobox.research.media3
+package com.frogobox.research.exoplayer
 
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
@@ -10,13 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.media3.common.Player
-import androidx.media3.common.util.Util
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.exoplayer.analytics.AnalyticsListener
 import com.frogobox.research.R
 import com.frogobox.research.databinding.ActivityWatchBinding
 import com.frogobox.research.util.setMediaSourceExt
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.analytics.AnalyticsListener
+import com.google.android.exoplayer2.util.Util
 
 class WatchActivity : AppCompatActivity() {
 
@@ -118,8 +118,7 @@ class WatchActivity : AppCompatActivity() {
     }
 
     private fun initializePlayer() {
-        player = ExoPlayer.Builder(this)
-            .build()
+        player = ExoPlayer.Builder(this).build()
             .also { exoPlayer ->
                 binding.videoView.player = exoPlayer
 
@@ -141,7 +140,7 @@ class WatchActivity : AppCompatActivity() {
         player?.let { exoPlayer ->
             mainViewModel.setSeekExoPlayer(
                 SeekExoPlayer(
-                    exoPlayer.currentMediaItemIndex,
+                    exoPlayer.currentPeriodIndex,
                     exoPlayer.currentPosition
                 )
             )

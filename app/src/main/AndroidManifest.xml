@@ -16,9 +16,6 @@
         android:theme="@style/Theme.Research"
         tools:targetApi="31">
         <activity
-            android:name=".exoplayer.WatchExoActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -28,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".media3.WatchActivity"
+            android:name=".exoplayer.WatchActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="true" />
     </application>
