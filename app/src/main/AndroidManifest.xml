@@ -26,6 +26,7 @@
         </activity>
         <activity
             android:name=".exoplayer.WatchActivity"
+            android:theme="@style/Theme.NoActionBar"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="true" />
     </application>

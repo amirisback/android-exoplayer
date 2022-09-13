@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -12,11 +13,12 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.frogobox.research.R
 import com.frogobox.research.databinding.ActivityWatchBinding
-import com.frogobox.research.util.setMediaSourceExt
+import com.frogobox.research.util.*
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.exoplayer2.util.Util
+
 
 class WatchActivity : AppCompatActivity() {
 
@@ -118,6 +120,7 @@ class WatchActivity : AppCompatActivity() {
     }
 
     private fun initializePlayer() {
+
         player = ExoPlayer.Builder(this).build()
             .also { exoPlayer ->
                 binding.videoView.player = exoPlayer
@@ -126,14 +129,21 @@ class WatchActivity : AppCompatActivity() {
                 // exoPlayer.setMediaItemExt(getString(R.string.media_url_mp4))
 
                 // Setup Media Multiple Video
-                exoPlayer.setMediaSourceExt(getString(R.string.media_url_jwp_2))
+                // exoPlayer.setMediaSourceExt(getString(R.string.media_url_jwp_2))
+
+                // Setup Media Youtube
+                // exoPlayer.setMediaYoutubeExt(this, getString(R.string.media_url_youtube_link_1))
 
                 // Setup Media Single Video Youtube Url
-                // exoPlayer.setMediaItemExtYT(getString(R.string.media_url_dash))
+                // exoPlayer.setMediaYoutubeDashExt(getString(R.string.media_url_dash))
+
+                // Setup Handling Media Video
+                exoPlayer.setSingleMediaExt(this, getString(R.string.media_url_youtube_link_1))
 
                 // Default setup
                 setupExoPlayerByViewModel(exoPlayer, playbackStateListener)
             }
+
     }
 
     private fun releasePlayer() {
@@ -183,12 +193,14 @@ class WatchActivity : AppCompatActivity() {
                     Log.d(TAG, "Duration : ${player?.duration}")
                     val position = (player?.currentPosition ?: 0)
                     Log.d(TAG, "Position : $position")
+                    binding.progressBar.visibility = View.VISIBLE
                 }
                 ExoPlayer.STATE_READY -> {
                     Log.d(TAG, "ExoPlayer.STATE_READY")
                     Log.d(TAG, "Duration : ${player?.duration}")
                     val position = (player?.currentPosition ?: 0)
                     Log.d(TAG, "Position : $position")
+                    binding.progressBar.visibility = View.GONE
                 }
                 ExoPlayer.STATE_ENDED -> {
                     Log.d(TAG, "ExoPlayer.STATE_ENDED")
