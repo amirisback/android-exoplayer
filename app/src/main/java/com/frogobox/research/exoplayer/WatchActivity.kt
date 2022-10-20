@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
@@ -34,24 +35,42 @@ class WatchActivity : AppCompatActivity() {
         ActivityWatchBinding.inflate(layoutInflater)
     }
 
+    private val videoTitle: String by lazy(LazyThreadSafetyMode.NONE) {
+        intent.getStringExtra(Constant.Extra.EXTRA_VIDEO_TITLE) ?: ""
+    }
+
+    private val videoUrl: String by lazy(LazyThreadSafetyMode.NONE) {
+        intent.getStringExtra(Constant.Extra.EXTRA_VIDEO_URL) ?: ""
+    }
+
     private val playbackStateListener: Player.Listener = playbackStateListener()
     private var player: ExoPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        val btnCloseVideo = binding.videoView.findViewById<ImageView>(R.id.iv_close_video)
+        val tvTitleVideo = binding.videoView.findViewById<TextView>(R.id.tv_title_video)
         val fullscreenButton = binding.videoView.findViewById<ImageView>(R.id.exo_fullscreen_icon)
+
+        tvTitleVideo.text = videoTitle
+
+        btnCloseVideo.setOnClickListener {
+            finish()
+        }
+
         fullscreenButton.setOnClickListener {
             if (isFullScreen) {
                 supportActionBar?.show()
                 requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
                 isFullScreen = false
-                fullscreenButton.setImageResource(R.drawable.ic_baseline_fullscreen)
+                fullscreenButton.setImageResource(R.drawable.ic_fullscreen)
             } else {
                 supportActionBar?.hide()
                 requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
                 isFullScreen = true
-                fullscreenButton.setImageResource(R.drawable.ic_baseline_fullscreen_exit)
+                fullscreenButton.setImageResource(R.drawable.ic_fullscreen_exit)
             }
         }
     }
@@ -81,7 +100,7 @@ class WatchActivity : AppCompatActivity() {
         exoPlayer.addAnalyticsListener(object : AnalyticsListener {
             override fun onPlaybackStateChanged(
                 eventTime: AnalyticsListener.EventTime,
-                state: Int
+                state: Int,
             ) {
                 super.onPlaybackStateChanged(eventTime, state)
                 Log.d(TAG, "onPlaybackStateChanged: $state")
@@ -138,7 +157,7 @@ class WatchActivity : AppCompatActivity() {
                 // exoPlayer.setMediaYoutubeDashExt(getString(R.string.media_url_dash))
 
                 // Setup Handling Media Video
-                exoPlayer.setSingleMediaExt(this, getString(R.string.media_url_youtube_link_1))
+                exoPlayer.setSingleMediaExt(this, videoUrl)
 
                 // Default setup
                 setupExoPlayerByViewModel(exoPlayer, playbackStateListener)
